@@ -1,0 +1,32 @@
+[
+  {
+    "id": "DSC00769",
+    "title": "DSC00769",
+    "caption": "",
+    "previewUrl": "https://your-r2-domain.example/previews/DSC00769_1600.jpg",
+    "originalUrl": "https://your-r2-domain.example/originals/DSC00769.jpg",
+    "w": 4000,
+    "h": 2500,
+    "album": "set01"
+  },
+  {
+    "id": "DSC04013",
+    "title": "DSC04013",
+    "caption": "",
+    "previewUrl": "https://your-r2-domain.example/previews/DSC04013_1600.jpg",
+    "originalUrl": "https://your-r2-domain.example/originals/DSC04013.jpg",
+    "w": 4000,
+    "h": 2250,
+    "album": "set01"
+  },
+  {
+    "id": "DSC05824",
+    "title": "DSC05824",
+    "caption": "",
+    "previewUrl": "https://your-r2-domain.example/previews/DSC05824_1600.jpg",
+    "originalUrl": "https://your-r2-domain.example/originals/DSC05824.jpg",
+    "w": 4000,
+    "h": 2500,
+    "album": "set01"
+  }
+]
