@@ -19,10 +19,10 @@ export default function Gallery({ photos }: { photos: Photo[] }) {
       {/* Header */}
       <div className="text-center mb-12">
         <h2 className="text-4xl font-bold text-gray-900 mb-4">
-          Photo Gallery
+          Gallery
         </h2>
-        <p className="text-lg text-gray-600">
-          {photos.length} {photos.length === 1 ? 'photo' : 'photos'} available for download
+        <p className="text-md text-gray-600">
+          {photos.length} {photos.length === 1 ? "photo" : "photos"} available for download
         </p>
       </div>
 
