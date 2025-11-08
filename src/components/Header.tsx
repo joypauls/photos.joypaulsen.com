@@ -1,5 +1,7 @@
 "use client";
 
+import AboutModal from "./AboutModal";
+
 interface HeaderProps {
   siteName: string;
   packUrl?: string;
@@ -10,11 +12,13 @@ export default function Header({ siteName, packUrl }: HeaderProps) {
     <header className="bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-xl font-bold text-gray-900">
             {siteName}
           </h1>
           
-          {packUrl && (
+          <AboutModal />
+          
+          {/* {packUrl && (
             <a
               href={packUrl}
               className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 active:bg-blue-800 transition-colors duration-200"
@@ -34,7 +38,7 @@ export default function Header({ siteName, packUrl }: HeaderProps) {
               </svg>
               Download All
             </a>
-          )}
+          )} */}
         </div>
       </div>
     </header>

@@ -17,14 +17,14 @@ export default function Gallery({ photos }: { photos: Photo[] }) {
   return (
     <div className="py-12">
       {/* Header */}
-      <div className="text-center mb-12">
+      {/* <div className="text-center mb-12">
         <h2 className="text-4xl font-bold text-gray-900 mb-4">
           Gallery
         </h2>
         <p className="text-md text-gray-600">
           {photos.length} {photos.length === 1 ? "photo" : "photos"} available for download
         </p>
-      </div>
+      </div> */}
 
       {/* Grid - 1 column on mobile, 3 on large screens */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
