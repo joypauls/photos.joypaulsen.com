@@ -8,5 +8,10 @@ dev:
 
 .PHONY: update
 update: manifest
-	# add cloudflare stuff
+	rclone sync assets/originals cloudflare:photos/originals --fast-list
+	rclone sync assets/previews cloudflare:photos/previews --fast-list
+
+.PHONY: bucket
+bucket:
+	rclone lsd cloudflare:photos 
 	
