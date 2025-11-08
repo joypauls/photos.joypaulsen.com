@@ -1,7 +1,2 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-:root { --radius: 12px; }
-html, body { background: #fafafa; }
+@import "tailwindcss";
 
