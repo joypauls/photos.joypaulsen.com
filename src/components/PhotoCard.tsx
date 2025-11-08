@@ -41,7 +41,7 @@ export default function PhotoCard({ photo }: { photo: Photo }) {
 
   return (
     <>
-      <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col">
+      <div className="bg-white rounded-md shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col">
         <div className="relative w-full h-48 bg-gray-100 flex-shrink-0">
           <img
             src={photo.previewUrl}
@@ -66,7 +66,7 @@ export default function PhotoCard({ photo }: { photo: Photo }) {
         <div className="px-4 pb-4 flex gap-2">
           <button
             onClick={() => setIsModalOpen(true)}
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 active:bg-gray-800 transition-colors duration-200"
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-md hover:bg-gray-700 active:bg-gray-800 transition-colors duration-200"
           >
             <svg 
               className="w-4 h-4" 
@@ -92,7 +92,7 @@ export default function PhotoCard({ photo }: { photo: Photo }) {
           
           <button
             onClick={handleDownload}
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 active:bg-blue-800 transition-colors duration-200"
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 active:bg-blue-800 transition-colors duration-200"
           >
             <svg 
               className="w-4 h-4" 
@@ -115,12 +115,12 @@ export default function PhotoCard({ photo }: { photo: Photo }) {
       {/* Full-screen Modal */}
       {isModalOpen && (
         <div 
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 p-4"
+          className="fixed inset-0 z-50 bg-black bg-opacity-90"
           onClick={() => setIsModalOpen(false)}
         >
           <button
             onClick={() => setIsModalOpen(false)}
-            className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors"
+            className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors z-20"
             aria-label="Close preview"
           >
             <svg 
@@ -138,25 +138,29 @@ export default function PhotoCard({ photo }: { photo: Photo }) {
             </svg>
           </button>
 
+          {/* Centered image - constrained to leave room for info bar */}
           <div 
-            className="relative max-w-full max-h-full"
+            className="w-full h-full flex items-center justify-center p-4 pb-24"
             onClick={(e) => e.stopPropagation()}
           >
             <img
               src={photo.previewUrl}
               alt={photo.title || `Photo ${photo.id}`}
-              className="max-w-full max-h-[90vh] w-auto h-auto object-contain"
+              className="max-w-full max-h-full object-contain"
+              style={{ display: 'block' }}
             />
-            <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4">
-              <h3 className="text-lg font-semibold">
-                {photo.title || `Photo ${photo.id}`}
-              </h3>
-              {photo.w && photo.h && (
-                <p className="text-sm text-gray-300">
-                  {photo.w} × {photo.h} pixels
-                </p>
-              )}
-            </div>
+          </div>
+
+          {/* Info overlay */}
+          <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-white p-4 z-20">
+            <h3 className="text-lg font-semibold">
+              {photo.title || `Photo ${photo.id}`}
+            </h3>
+            {photo.w && photo.h && (
+              <p className="text-sm text-gray-300">
+                {photo.w} × {photo.h} pixels
+              </p>
+            )}
           </div>
         </div>
       )}

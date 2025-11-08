@@ -27,7 +27,7 @@ export default function Gallery({ photos }: { photos: Photo[] }) {
       </div>
 
       {/* Grid - 1 column on mobile, 3 on large screens */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {photos.map((photo) => (
           <PhotoCard key={photo.id} photo={photo} />
         ))}
