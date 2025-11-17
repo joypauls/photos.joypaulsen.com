@@ -1,7 +1,7 @@
 import Gallery from "@/components/Gallery";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import photos from "@/data/photos.json";
+import photos from "@/data/manifest.json";
 
 const SITE_NAME = process.env.SITE_NAME || "Free Photo Downloads";
 const PACK_URL = process.env.PACK_URL || "";

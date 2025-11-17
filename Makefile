@@ -14,4 +14,8 @@ update: manifest
 .PHONY: bucket
 bucket:
 	rclone lsd cloudflare:photos 
-	
+
+.PHONY: clean
+clean:
+	rm -rf assets/previews/*
+	rm -rf src/data/manifest.json

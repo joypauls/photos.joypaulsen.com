@@ -6,8 +6,8 @@ import ExifParser from "exif-parser";
 const R2_BASE = process.env.R2_BASE_URL;
 const INPUT_DIR = "assets/originals";
 const PREVIEW_DIR = "assets/previews";
-const MANIFEST_PATH = "src/data/photos.json";
-const CAPTIONS_PATH = "src/data/captions.json";
+const MANIFEST_PATH = "src/data/manifest.json";
+const PHOTO_METADATA_PATH = "src/data/photos.json";
 const PREVIEW_WIDTH = 1600;
 
 async function ensureDir(p) { await fs.mkdir(p, { recursive: true }); }
@@ -18,13 +18,13 @@ async function main() {
   await ensureDir(PREVIEW_DIR);
   const entries = await fs.readdir(INPUT_DIR, { withFileTypes: true });
 
-  // Load existing captions/metadata if exists
-  let captions = {};
+  // Load existing metadata if exists
+  let metadata = {};
   try {
-    const captionsData = await fs.readFile(CAPTIONS_PATH, "utf-8");
-    captions = JSON.parse(captionsData);
+    const metadataData = await fs.readFile(PHOTO_METADATA_PATH, "utf-8");
+    metadata = JSON.parse(metadataData);
   } catch (err) {
-    console.log("No captions file found, will create new one");
+    console.log("No metadata file found, will create new one");
   }
 
   // Track which photo IDs we encounter
@@ -55,17 +55,18 @@ async function main() {
     }
 
     // Probe original dimensions and EXIF for manifest
-    const meta = await sharp(inputPath).metadata();
+    const img = sharp(inputPath);
+    const meta = await img.metadata();
     
     // Extract EXIF data if available
-    const exif = meta.exif ? parseExif(meta.exif) : {};
+    const exif = meta.exif ? parseExif(await fs.readFile(inputPath)) : {};
     
     // Get manual metadata for this photo
-    const manual = captions[id] || {};
+    const manual = metadata[id] || {};
     
-    // Initialize captions entry if it doesn't exist
-    if (!captions[id]) {
-      captions[id] = {
+    // Initialize metadata entry if it doesn't exist
+    if (!metadata[id]) {
+      metadata[id] = {
         title: "",
         caption: "",
         location: "",
@@ -96,18 +97,18 @@ async function main() {
     });
   }
 
-  // Clean up captions file: remove entries for deleted photos
-  const updatedCaptions = {};
+  // Clean up metadata file: remove entries for deleted photos
+  const updatedMetadata = {};
   for (const id of currentPhotoIds) {
-    updatedCaptions[id] = captions[id];
+    updatedMetadata[id] = metadata[id];
   }
   
-  const removedCount = Object.keys(captions).length - Object.keys(updatedCaptions).length;
-  const addedCount = currentPhotoIds.size - (Object.keys(captions).length - removedCount);
+  const removedCount = Object.keys(metadata).length - Object.keys(updatedMetadata).length;
+  const addedCount = currentPhotoIds.size - (Object.keys(metadata).length - removedCount);
   
-  // Write updated captions file
-  await fs.writeFile(CAPTIONS_PATH, JSON.stringify(updatedCaptions, null, 2));
-  console.log(`Updated ${CAPTIONS_PATH}: ${addedCount} added, ${removedCount} removed`);
+  // Write updated metadata file
+  await fs.writeFile(PHOTO_METADATA_PATH, JSON.stringify(updatedMetadata, null, 2));
+  console.log(`Updated ${PHOTO_METADATA_PATH}: ${addedCount} added, ${removedCount} removed`);
 
   // Write photos manifest
   photos.sort((a, b) => a.id.localeCompare(b.id));
@@ -115,13 +116,27 @@ async function main() {
   console.log(`Wrote ${photos.length} photos to ${MANIFEST_PATH}`);
 }
 
-// Helper to parse EXIF buffer
-function parseExif(exifBuffer) {
+
+function parseExif(fileBuffer) {
   try {
-    const parser = ExifParser.create(exifBuffer);
+    const parser = ExifParser.create(fileBuffer);
     const result = parser.parse();
-    return result.tags || {};
+    const tags = result.tags || {};
+    
+    // Map common EXIF tags to our format
+    return {
+      DateTimeOriginal: tags.DateTimeOriginal 
+        ? new Date(tags.DateTimeOriginal * 1000).toISOString() 
+        : null,
+      Model: tags.Model || null,
+      LensModel: tags.LensModel || null,
+      FocalLength: tags.FocalLength || null,
+      FNumber: tags.FNumber || null,
+      ISO: tags.ISO || null,
+      ExposureTime: tags.ExposureTime || null
+    };
   } catch (err) {
+    console.error("EXIF parsing error:", err.message);
     return {};
   }
 }
