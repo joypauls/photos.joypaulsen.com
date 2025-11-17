@@ -10,6 +10,7 @@ type Photo = {
   originalUrl: string;
   w?: number;
   h?: number;
+  location?: string | null;
 };
 
 export default function PhotoCard({ photo }: { photo: Photo }) {
@@ -55,6 +56,12 @@ export default function PhotoCard({ photo }: { photo: Photo }) {
           <h3 className="text-base font-semibold text-gray-900 mb-1 truncate">
             {photo.title || `Photo ${photo.id}`}
           </h3>
+          
+          {photo.location && (
+            <p className="text-xs text-gray-600 mb-1 truncate">
+              📍 {photo.location}
+            </p>
+          )}
           
           {photo.w && photo.h && (
             <p className="text-xs text-gray-500">
@@ -156,6 +163,11 @@ export default function PhotoCard({ photo }: { photo: Photo }) {
             <h3 className="text-lg font-semibold">
               {photo.title || `Photo ${photo.id}`}
             </h3>
+            {photo.location && (
+              <p className="text-sm text-gray-300 mb-1">
+                📍 {photo.location}
+              </p>
+            )}
             {photo.w && photo.h && (
               <p className="text-sm text-gray-300">
                 {photo.w} × {photo.h} pixels
