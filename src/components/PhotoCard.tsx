@@ -147,7 +147,7 @@ export default function PhotoCard({ photo }: { photo: Photo }) {
 
           {/* Centered image - constrained to leave room for info bar */}
           <div 
-            className="w-full h-full flex items-center justify-center p-4 pb-24"
+            className="w-full h-full flex items-center justify-center p-12 pb-24"
             onClick={(e) => e.stopPropagation()}
           >
             <img

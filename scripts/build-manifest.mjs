@@ -111,7 +111,15 @@ async function main() {
   console.log(`Updated ${PHOTO_METADATA_PATH}: ${addedCount} added, ${removedCount} removed`);
 
   // Write photos manifest
-  photos.sort((a, b) => a.id.localeCompare(b.id));
+  // Sort by date taken descending (newest first), fallback to ID if no date
+  photos.sort((a, b) => {
+    if (a.dateTaken && b.dateTaken) {
+      return new Date(b.dateTaken) - new Date(a.dateTaken);
+    }
+    if (a.dateTaken) return -1;
+    if (b.dateTaken) return 1;
+    return a.id.localeCompare(b.id);
+  });
   await fs.writeFile(MANIFEST_PATH, JSON.stringify(photos, null, 2));
   console.log(`Wrote ${photos.length} photos to ${MANIFEST_PATH}`);
 }
